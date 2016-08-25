@@ -1,11 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">
-    <!--<CommandSet xml:lang="zh-cn" Name="Swith_zh-cn">
-        <AppName> 控制台 </AppName>
-        <Example> 使用控制台来打开灯泡 </Example>
+  
+  <CommandSet xml:lang="en-us" Name="MyCommandSet_en-us">
+    <AppName> Peter </AppName>
+    <Example> Ask Peter to turn on the light </Example>
+
+    <Command Name="switch">
+      <Example> Ask Peter to turn on the light </Example>   
+      
+      <ListenFor RequireAppName="BeforeOrAfterPhrase"> {status} the light {port}</ListenFor>
+      <ListenFor RequireAppName="ExplicitlySpecified"> Ask {builtin:AppName} to {status} the light {port}</ListenFor>
+      
+      <Feedback> {status} the light {port}</Feedback>
+      <Navigate Target="placeholder"/>
+    </Command>
+
+    <PhraseList Label="status">
+      <Item>turn on</Item>
+      <Item>turn off</Item>
+    </PhraseList>
+  
+  <PhraseList Label="port">
+      <Item>5</Item>
+      <Item>6</Item>
+    </PhraseList>
+  </CommandSet>
+ <!--<CommandSet xml:lang="zh-chs" Name="MyCommandSet_zh-cns">
+        <AppName> Peter </AppName>
+        <Example> 使用Peter来打开灯泡 </Example>
 
         <Command Name="switch">
-            <Example> 使用控制台来打开灯 </Example>
+            <Example> 使用Peter来打开灯 </Example>
+          <ListenFor RequireAppName="BeforeOrAfterPhrase"> {status} 灯泡</ListenFor>
             <ListenFor RequireAppName="ExplicitlySpecified"> 使用 {builtin:AppName} 来 {status} 灯泡 </ListenFor>
             <Feedback> {status} 灯泡 </Feedback>
             <Navigate Target="placeholder"/>
@@ -16,22 +42,4 @@
             <Item>关闭</Item>
         </PhraseList>
     </CommandSet>-->
-  <CommandSet xml:lang="en-us" Name="Swith_en-us">
-    <AppName> Peter </AppName>
-    <Example> Ask Peter to turn on the light </Example>
-
-    <Command Name="switch">
-      <Example> Ask Peter to turn on the light </Example>
-      <ListenFor RequireAppName="BeforeOrAfterPhrase"> {status} the light</ListenFor>
-      <ListenFor RequireAppName="ExplicitlySpecified"> Ask {builtin:AppName} to {status} the light</ListenFor>
-      
-      <Feedback> {status} the light </Feedback>
-      <Navigate Target="placeholder"/>
-    </Command>
-
-    <PhraseList Label="status">
-      <Item>turn on</Item>
-      <Item>turn off</Item>
-    </PhraseList>
-  </CommandSet>
 </VoiceCommands>

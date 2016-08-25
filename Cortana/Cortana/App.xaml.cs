@@ -182,11 +182,14 @@ namespace Cortana
                         string status = speechRecognitionResult.SemanticInterpretation.Properties["status"].FirstOrDefault();
                         System.Diagnostics.Debug.WriteLine(status);
 
+                        string port = speechRecognitionResult.SemanticInterpretation.Properties["port"].FirstOrDefault();
+                        System.Diagnostics.Debug.WriteLine(port);
+
                         string messageString = "[]";
                         if (status.Equals("turn on"))
-                            messageString = "{\"Name\":\"Power\",\"Parameters\":{\"port\":5,\"status\":true}}";
+                            messageString = "{\"Name\":\"Power\",\"Parameters\":{\"port\":"+port+",\"status\":true}}";
                         else if (status.Equals("turn off"))
-                            messageString = "{\"Name\":\"Power\",\"Parameters\":{\"port\":5,\"status\":false}}";
+                            messageString = "{\"Name\":\"Power\",\"Parameters\":{\"port\":"+port+",\"status\":false}}";
 
                         var serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
                         System.Diagnostics.Debug.WriteLine(messageString);

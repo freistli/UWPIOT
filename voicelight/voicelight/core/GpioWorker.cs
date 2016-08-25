@@ -3,18 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Devices.Gpio;
+using Windows.UI.Xaml;
 
 namespace voicelight
 {
-   
+
     class GpioWorker
     {
         static GpioController controller;
         static Dictionary<int, GpioPin> num2pin;
         static Dictionary<int, GpioPinValue> num2pinValue;
+        static Timer timer ;
         internal class Command
         {
             [JsonProperty("port")]
@@ -41,7 +44,7 @@ namespace voicelight
 
             if (num2pinValue == null)
                 num2pinValue = new Dictionary<int, GpioPinValue>();
-            
+
         }
 
         public static void DestroyGPIO()
@@ -59,7 +62,7 @@ namespace voicelight
             List<Command> cmds = null;
             try
             {
-                cmds = JsonConvert.DeserializeObject<List<Command>>("["+data+"]");
+                cmds = JsonConvert.DeserializeObject<List<Command>>("[" + data + "]");
             }
             catch (Exception e)
             {
@@ -83,7 +86,7 @@ namespace voicelight
                 }
                 catch (Exception e)
                 {
-                     System.Diagnostics.Debug.WriteLine(e.Message);
+                    System.Diagnostics.Debug.WriteLine(e.Message);
                 }
             }
         }
@@ -100,7 +103,7 @@ namespace voicelight
                 throw new Exception("Invalid Pin : " + num);
 
             num2pin[num] = pin;
-            
+
             return pin;
         }
 
@@ -110,6 +113,32 @@ namespace voicelight
                 return (num2pinValue[port]);
             else
                 return GpioPinValue.High;
+        }
+        public static void flash ()
+        {
+            timer = new Timer(
+                (x) => Timer_Tick(x),null,10000,1000
+                );
+            return;
+        }
+        public static void stopFlash()
+        {
+            if (timer != null)
+                timer.Dispose();
+            return;
+        }
+        public static void Timer_Tick(object e)
+        {
+            GpioPinValue gpv = GetPortStatus(5);
+            GpioPin pin;
+            pin = GetPin(5);
+            if (pin != null)
+            {
+                gpv = (gpv != GpioPinValue.Low) ? GpioPinValue.Low : GpioPinValue.High;
+                pin.Write(gpv);
+                pin.SetDriveMode(GpioPinDriveMode.Output);
+                num2pinValue[5] = gpv;
+            }
         }
     }
 }

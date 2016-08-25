@@ -17,6 +17,7 @@ namespace voicelight.core
 {
     namespace AzureSuite
     {
+        
         [DataContract]
         public class DeviceProperties
         {
@@ -132,7 +133,7 @@ namespace voicelight.core
             string iotHubUri = "eyesonair.azure-devices.net";
             string deviceId = "Air_RaspBerry01";
             string deviceKey = "yaVTkbMCVgvqTPyXbmPrgA==";
-
+            int LED_PORT = 5;
             public AzureWorker(string uri, string id, string key)
             {
                 iotHubUri = uri;
@@ -256,14 +257,14 @@ namespace voicelight.core
                         {
 
                             // Received a new message, display it
-                            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                            async () =>
-                            {
-                                var dialogbox = new MessageDialog("Received message from Azure IoT Hub: " + command.Parameters.Message.ToString());
-                                await dialogbox.ShowAsync();
-                            });
+                            //await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                            //async () =>
+                            //{
+                            //    var dialogbox = new MessageDialog("Received message from Azure IoT Hub: " + command.Parameters.Message.ToString());
+                            //    await dialogbox.ShowAsync();
+                            //});
                             // We received the message, indicate IoTHub we treated it
-
+                           GpioWorker.flash();
                         }
 
                         if (command.Name == "Power")
@@ -271,9 +272,8 @@ namespace voicelight.core
                             //Boolean bl = true;
 
                             //Boolean.TryParse(command.Parameters.status.ToString(), out bl);
-
+                            GpioWorker.stopFlash();
                             GpioWorker.Process(JsonConvert.SerializeObject(command.Parameters));
-
                         }
                         await deviceClient.CompleteAsync(message);
                     }
