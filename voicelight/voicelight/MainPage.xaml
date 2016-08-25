@@ -7,5 +7,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="-437,0,-649,0"/>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="-437,0,-649,0">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <TextBlock x:Name="LocalIP" FontSize="26.667"></TextBlock>
+        <TextBlock x:Name="LED"  FontSize="26.667"></TextBlock>
+        </StackPanel>
+    </Grid>
 </Page>

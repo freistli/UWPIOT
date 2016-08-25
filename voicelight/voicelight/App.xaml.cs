@@ -36,7 +36,7 @@ namespace voicelight
     sealed partial class App : Application
     {
 
-         static public AzureWorker azureWorker = new AzureWorker("eyesonair.azure-devices.net", "Air_RaspBerry01", "yaVTkbMCVgvqTPyXbmPrgA==");
+        static public AzureWorker azureWorker = new AzureWorker("eyesonair.azure-devices.net", "Air_RaspBerry01", "yaVTkbMCVgvqTPyXbmPrgA==");
 
         Timer timer;
         /// <summary>

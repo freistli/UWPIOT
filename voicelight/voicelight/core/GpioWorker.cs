@@ -14,6 +14,7 @@ namespace voicelight
     {
         static GpioController controller;
         static Dictionary<int, GpioPin> num2pin;
+        static Dictionary<int, GpioPinValue> num2pinValue;
         internal class Command
         {
             [JsonProperty("port")]
@@ -38,6 +39,8 @@ namespace voicelight
             if (num2pin == null)
                 num2pin = new Dictionary<int, GpioPin>();
 
+            if (num2pinValue == null)
+                num2pinValue = new Dictionary<int, GpioPinValue>();
             
         }
 
@@ -71,8 +74,10 @@ namespace voicelight
                     var pin = GetPin(cmd.port);
                     if (pin != null)
                     {
-                        pin.Write((cmd.status == true) ? GpioPinValue.Low : GpioPinValue.High);
+                        GpioPinValue gpv = (cmd.status == true) ? GpioPinValue.Low : GpioPinValue.High;
+                        pin.Write(gpv);
                         pin.SetDriveMode(GpioPinDriveMode.Output);
+                        num2pinValue[cmd.port] = gpv;
                         System.Diagnostics.Debug.WriteLine("set port " + cmd.port + " " + cmd.status);
                     }
                 }
@@ -97,6 +102,14 @@ namespace voicelight
             num2pin[num] = pin;
             
             return pin;
+        }
+
+        public static GpioPinValue GetPortStatus(int port)
+        {
+            if (num2pinValue.ContainsKey(port))
+                return (num2pinValue[port]);
+            else
+                return GpioPinValue.High;
         }
     }
 }
